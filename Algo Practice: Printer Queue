@@ -1,0 +1,152 @@
+
+'''
+❓ PROMPT
+You are asked to design a simple printer queue.
+
+The printer can only perform one operation at a time and processes the print jobs in the order they are added to the queue. The actions parameter is a list of tuples, where each tuple contains one of the following commands:
+
+("add", "document_name"): Add a new document to the print queue.
+("print",): Print the next document in the queue.
+("cancel", "document_name"): Cancel a document in the queue. If the document is not in the queue, do nothing.
+The function should return a list of strings representing the names of the printed documents in the order they were printed.
+
+Example(s)
+actions = [
+    ("add", "doc1"),    # Add 'doc1' to the queue
+    ("add", "doc2"),    # Add 'doc2' to the queue
+    ("print",),         # Print 'doc1' from the queue to the printed queue
+    ("cancel", "doc1"), # Remove 'doc1' from the queue (do nothing)
+    ("add", "doc3"),    # Add 'doc3' to the queue
+    ("print",),         # Print 'doc2' from the queue to the printed queue
+    ("print",)          # Print 'doc3' from the queue to the printed queue
+]
+
+result = printer_queue(actions)
+print(result)  # Output: ['doc1', 'doc2', 'doc3']
+
+<space />
+
+Hint: What is the difference between a stack and a queue, and why do we use a queue in this question?
+
+A: Queues follow First-In-First-Out (FIFO) principle, whereas Stacks are Last-In-First-Out (LIFO) principle. We use a queue in this particular problem because the documents added to the queue should be printed in the order it was added.
+ 
+
+🔎 EXPLORE
+List your assumptions & discoveries:
+ Q: Can the input list be empty?
+A: Yes. The list can be empty.
+Q: Can the input list have incorrect inputs?
+A: No, assume the inputs will always be correct, as given in the problem statement.
+Q: Is it possible for the queue to have documents with the same name at the same time?
+A: No, it is safe to assume that all document names in the queue are unique.
+
+Insightful & revealing test cases:
+ Basic Operation
+Cancel Operation
+Cancel non-existent document
+Empty Input
+Complex operations
+
+🧠 BRAINSTORM
+What approaches could work?
+Algorithm 1:
+Time: O(n) where n is the number of actions in the normal case, but if there are a lot of cancels, then the runtime can be as bad as O(n^2)
+Space: O(m) where m is the maximum number of documents in the queue at any time.
+ 
+
+📆 PLAN
+Outline of algorithm #: 
+Initialize the queue to store documents
+Initialize the list to store printed documents
+Loop through the list of commands.
+  For each command:
+    "add" would add the doc to the queue
+    "print" would remove the first item from the queue
+    "cancel" would remove the target doc from the queue
+Return the 'printed' queue.
+
+'''
+# 🛠️ IMPLEMENT
+# function printerQueue(actions) {) // returns list
+# def printer_queue(actions: list) -> list:
+ 
+def printer_queue(actions: list) -> list:
+    doc_list = []
+    printed_docs = []
+
+    for i in range(len(actions)):
+        command = actions[i][0] 
+        if len(actions[i]) > 1:
+            doc = actions[i][1]
+
+        if command == "add":
+            doc_list.append(doc)
+        elif command == "print":
+            if doc_list:
+                printed_docs.append(doc_list.pop(0)) #pop(0) does the first element
+        elif command == "cancel":
+            if doc in doc_list:
+                doc_list.remove(doc)
+
+    return printed_docs
+
+
+
+
+# 🧪 VERIFY
+# Run tests. Methodically debug & analyze issues.
+# Test Case 1: Basic operations
+
+actions = [
+    ("add", "doc1"),
+    ("add", "doc2"),
+    ("print",),
+    ("print",)
+]
+result = printer_queue(actions)
+print(result)  # Output: ['doc1', 'doc2']
+
+# Test Case 2: Cancel operation
+actions = [
+    ("add", "doc1"),
+    ("add", "doc2"),
+    ("cancel", "doc2"),
+    ("print",),
+    ("print",)
+]
+result = printer_queue(actions)
+print(result)  # Output: ['doc1']
+
+# Test Case 3: Cancel non-existent document
+actions = [
+    ("add", "doc1"),
+    ("cancel", "doc2"),
+    ("print",),
+    ("print",)
+]
+result = printer_queue(actions)
+print(result)  # Output: ['doc1']
+
+# Test Case 4: Empty input
+actions = []
+result = printer_queue(actions)
+print(result)  # Output: []
+
+# Test Case 5: Complex operations
+actions = [
+    ("add", "doc1"),
+    ("add", "doc2"),
+    ("print",),
+    ("cancel", "doc1"),
+    ("add", "doc3"),
+    ("print",),
+    ("print",),
+    ("cancel", "doc4"),
+    ("add", "doc5"),
+    ("print",),
+    ("add", "doc6"),
+    ("cancel", "doc6"),
+    ("print",),
+]
+result = printer_queue(actions)
+print(result)  # Output: ['doc1', 'doc2', 'doc3', 'doc5']
