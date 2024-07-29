@@ -1,0 +1,100 @@
+'''
+Stack Class with Linked List
+
+Implement a basic stack class using an linked list as the underlying storage. Stacks have two critical methods, push() and pop() to add and remove an item from the stack, respectively. You'll also need a constructor for your class, and for convenience, add a size() method that returns the current size of the stack. All of these methods should run in O(1) time!
+
+Remember, a stack is a last in, first out data structure!
+
+A singly linked list is a simple way to create a stack. The head of the list is the top of the stack.
+ 
+
+EXAMPLE(S)
+const stack = new LLStack();
+console.log(stack.size()) // 0
+stack.push(2);
+stack.push(3);
+console.log(stack.size()) // 2
+console.log(stack.pop()); // 3
+console.log(stack.size()) // 1
+console.log(stack.pop()); // 2
+ 
+
+FUNCTION SIGNATURE
+class LLNode {
+  constructor(value, next = null) {
+    this.value = value;
+    this.next = next;
+  }
+}
+
+class LLStack {
+  constructor() {} // initialize the stack to be empty
+
+  push(newValue) {} // Adds a new value to the stack
+
+  pop() {} // Removes the top value from the stack and returns it
+
+  size() {} // returns the current size of the stack
+}
+
+-ListNode class
+
+-LLStack class
+    -init
+        -size
+        -head
+    -push
+        -make a new node and 
+        -make it new head
+        -update size
+    -pop
+        -head = head.next
+        -decrement size
+        -if empty,  (None) or throw an exception.
+
+    -size
+        -return size
+
+'''
+class ListNode:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+class LLStack:
+    def __init__(self):
+        self.head = None
+        self.count = 0
+    
+    def push(self, value):
+        new_node = ListNode(value, self.head)
+        #self.new_node.next = self.head
+        self.head = new_node
+        self.count +=1
+
+    def pop(self):
+        #print("head value is " + str(self.head.value))
+        if not self.head:
+            return None
+        popped = self.head.value
+        self.head = self.head.next
+        self.count -= 1
+
+        return popped    
+
+    def size(self):
+        #print("head value is " + str(self.head.value))
+        return self.count
+
+#############################################################
+
+newStack = LLStack()
+print(newStack.size()) #0
+newStack.push(2)
+newStack.push(3)
+print(newStack.size()) #2
+print(newStack.pop()) #3
+print(newStack.size()) #1
+print(newStack.pop()) #2
+
+
